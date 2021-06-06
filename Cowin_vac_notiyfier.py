@@ -10,18 +10,19 @@ def fetch_details():
         }
 
     available_result = []
-    pincode = 560036
+    pincode = 560049
+    age = 18
+    vaccine_name = 'COVISHIELD'
     current_date = datetime.today()
     date_list = [(current_date + timedelta(days=x)).strftime("%d-%m-%y") for x in range(7)]
-    
     while True:
         for date in date_list:
             url = f"https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode={pincode}&date={date}"
             response = requests.get(url,headers=HEADER)
             data = response.json()
-            aval_cent = {}
             for center in data['centers']:
-                if center['sessions'][0]['available_capacity'] != 0:
+                if center['sessions'][0]['available_capacity'] != 0 and center['sessions'][0]['min_age_limit'] == age and center['sessions'][0]['vaccine'] == vaccine_name:
+                    aval_cent = {}
                     aval_cent['DATA'] = date
                     aval_cent['FEES'] = center['fee_type']
                     aval_cent['VAC_NAME'] = center['sessions'][0]['vaccine']
@@ -37,15 +38,14 @@ def fetch_details():
 
 
 def send_notification(vac_aval_cent_list):
-    if len(vac_aval_cent_list) != 0:
-        for center in vac_aval_cent_list:
-            print(f"DATE: {center['DATA']}")
-            print("Fee Type: {}".format(center['FEES']))
-            print("Vaccine Name: {}".format(center['VAC_NAME']))
-            print("Available_capacity: {}".format(center['CAP']))
-            print("Center Name: {}".format(center['CEN_NAME']))
-            print("Address: {}".format(center['ADDRESS']))
-            print("====================================================================================")
+    for center in vac_aval_cent_list:
+        print(f"DATE: {center['DATA']}")
+        print("Fee Type: {}".format(center['FEES']))
+        print("Vaccine Name: {}".format(center['VAC_NAME']))
+        print("Available_capacity: {}".format(center['CAP']))
+        print("Center Name: {}".format(center['CEN_NAME']))
+        print("Address: {}".format(center['ADDRESS']))
+        print("====================================================================================")
 
 def main():
     fetch_details()
