@@ -1,5 +1,5 @@
 # To grep all the IP's from files, we can use linux command
-# Command: ls | xargs cat | grep -oE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b" | less
+# Command: ls | xargs cat | grep -oE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b" | less >>ip_ex.txt
 
 
 import matplotlib.pyplot as plt
