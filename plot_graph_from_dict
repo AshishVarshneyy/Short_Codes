@@ -1,0 +1,26 @@
+# To grep all the IP's from files, we can use linux command
+# Command: ls | xargs cat | grep -oE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b" | less
+
+
+import matplotlib.pyplot as plt
+
+
+def form_ip_dict():
+    ip_dict = {}
+    with open("ip_ex.txt","r") as file:
+        for line in file:
+            ip_dict[line.strip()] = ip_dict.get(line.strip(),0)+1
+    return ip_dict
+
+
+def plot_histogram(data_set):
+    plt.bar(data_set.keys(), data_set.values(), color='b')
+    plt.show()
+
+def main():
+    data = form_ip_dict()
+    plot_histogram(data)
+
+
+if __name__ == "__main__":
+    main()
